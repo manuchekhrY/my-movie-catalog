@@ -1,5 +1,5 @@
 import { AppBar, Button, Container, Toolbar } from "@mui/material";
-import { SearchForm } from "../searchForm/SearchForm";
+import { SearchForm } from "./SearchForm";
 
 export function Navbar() {
 

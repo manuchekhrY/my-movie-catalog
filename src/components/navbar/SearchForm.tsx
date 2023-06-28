@@ -2,6 +2,8 @@ import { Button, Grid, TextField } from "@mui/material";
 import { useState } from "react";
 import { searchUrl } from "../../extra/endPoint";
 import axios from "axios";
+import './Navbar.css'
+import filterData from "../../extra/MovieType";
 
 export function SearchForm() {
 
@@ -9,11 +11,21 @@ export function SearchForm() {
 
     const handleClick = () => {
         axios.get(searchUrl(movieName)).then((res) =>{
+            const data = filterData(res);
+            console.log(data);
+        })
+        .catch(err => console.log(err, 'hello'))
+    }
+
+    /*
+        const handleClick = () => {
+        axios.get(searchUrl(movieName)).then((res) =>{
             for( let movie of res.data.results)
                 console.log(movie.title);
         })
         .catch(err => console.log(err))
     }
+     */
 
     return (
         <form className="form">
