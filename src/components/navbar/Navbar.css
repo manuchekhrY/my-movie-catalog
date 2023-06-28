@@ -1,0 +1,31 @@
+.loginButton {
+    height: 40px;
+    min-width: 90px;
+    text-decoration: none;
+    color: red;
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+    outline: wheat;
+    border-color: black;
+    text-transform: none;
+    text-align: center;
+    line-height: 1;
+    
+}
+
+/*
+            my: 2,
+            height: '40px',
+            minWidth: '90px',
+            textDecoration: 'none',
+            color: 'white',
+            display: 'flex',
+            marginLeft: 'auto',
+            alignItems: 'center',
+            outline: 'white',
+            borderColor: 'white',
+            textTransform: 'none',
+            textAlign: 'center',
+            lineHeight: 1,
+*/
