@@ -1,5 +1,5 @@
-import { AppBar, Button, Container, Grid, Paper, TextField, Toolbar } from "@mui/material";
-import './Navbar.css'
+import { AppBar, Button, Container, Toolbar } from "@mui/material";
+import { SearchForm } from "../searchForm/SearchForm";
 
 export function Navbar() {
 
@@ -19,18 +19,7 @@ export function Navbar() {
             <Container maxWidth='xl' >
                 <Toolbar disableGutters>
                     <Button color="inherit" variant="contained">Movie Catalog</Button>
-                    <form className="form">
-                        <Grid container spacing={1} alignItems="center">
-                            <Grid item xs={8}>
-                                <TextField style={{color:'red'}} label="Enter text" fullWidth size="small" />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Button variant="contained" color="primary" >
-                                    Search
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
+                    <SearchForm/>
                     <Button sx={styles.loginButton}  variant="contained">Login</Button>
                 </Toolbar>
             </Container>
