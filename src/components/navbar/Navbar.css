@@ -14,18 +14,8 @@
     
 }
 
-/*
-            my: 2,
-            height: '40px',
-            minWidth: '90px',
-            textDecoration: 'none',
-            color: 'white',
-            display: 'flex',
-            marginLeft: 'auto',
-            alignItems: 'center',
-            outline: 'white',
-            borderColor: 'white',
-            textTransform: 'none',
-            textAlign: 'center',
-            lineHeight: 1,
-*/
+.form {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+}
