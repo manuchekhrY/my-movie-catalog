@@ -1,9 +1,3 @@
-/*.form {
-    display: flex;
-    margin-left: auto;
-    align-items: center;
-}*/
-
 .forms {
     display: grid;
     padding: 50px;

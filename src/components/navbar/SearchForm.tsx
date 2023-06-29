@@ -5,19 +5,34 @@ import axios from "axios";
 import './Navbar.css'
 import returnArrayData, { Movie } from "../../extra/MovieType";
 
+let currentPage = 1;
+
 export function SearchForm() {
 
-    const [movieName, setMovieName] = useState('');
+    const [movieName, setMovieName] = useState<string>('');
 
     const [arr, setArr] = useState<Movie[]>();
 
-    const handleClick = () => {
-        axios.get(searchUrl(movieName)).then((res) => {
-            const data = returnArrayData(res);
+    function callAPI(page : number) {
+        axios.get(searchUrl(movieName, page))
+        .then((res) => {
             setArr(returnArrayData(res));
-            console.log(data);
+            currentPage = page;
         })
-            .catch(err => console.log(err, 'hello'))
+            .catch(err => console.log(err));
+    }
+
+    function callNextPage() {
+        const nextPage = currentPage + 1;
+        callAPI(nextPage);
+    }
+
+    const handleClick = () => {
+        callAPI(currentPage);
+    }
+
+    const handleClick2 = () =>{
+        callNextPage();
     }
 
     const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
@@ -26,7 +41,7 @@ export function SearchForm() {
         return array.map((movie) => {
             return (
                 <div className="form">
-                    <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title}/>
+                    <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
                     <div>
                         <h2>{movie.title}</h2>
                         <p>{movie.overview}</p>
@@ -38,27 +53,28 @@ export function SearchForm() {
 
     return (
         <>
-            <Container sx={{ display: 'flex',alignContent: 'center', width: '500px', padding: '10px'}}> 
+            <Container sx={{ display: 'flex', alignContent: 'center', width: '500px', padding: '10px' }}>
                 <TextField
                     color="error"
                     label="Enter text"
-                    onChange={e => setMovieName(e.target.value)}
+                    onChange={e => (setMovieName(e.target.value), currentPage=1)}
                     size="small"
-                    fullWidth 
-                    sx={{marginRight:'10px'}}
-                    />
+                    fullWidth
+                    sx={{ marginRight: '10px' }}
+                />
 
                 <Button
                     variant="contained"
                     onClick={handleClick} >
-                    Search
+                    Search currentPage{currentPage}
                 </Button>
+                <Button variant="contained" onClick={handleClick2}>Next Page</Button>
             </Container>
             <div className="forms">
-            {
-                arr && (displayData(arr))
-            }
-        </div>
+                {
+                    arr && (displayData(arr))
+                }
+            </div>
         </>
     )
 }
