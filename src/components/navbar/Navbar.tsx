@@ -12,11 +12,11 @@ export function Navbar() {
             marginLeft: 'auto',
             outline: 'white',
             lineHeight: 1,
-
+            
         }
     }
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{marginBottom:'30px'}}>
             <Container maxWidth='xl' >
                 <Toolbar disableGutters>
                     <Button color="inherit" variant="contained">Movie Catalog</Button>

@@ -6,7 +6,7 @@ export interface Movie {
     
 }
 
-function filterData(apiResponse: any): Movie[] {
+function returnArrayData(apiResponse: any): Movie[] {
     const movies: Movie[] = apiResponse.data.results.map((result: any) => {
         const movie: Movie = {
             poster_path: result.poster_path,
@@ -19,5 +19,5 @@ function filterData(apiResponse: any): Movie[] {
     return movies;
 }
 
-export default filterData;
+export default returnArrayData;
 
