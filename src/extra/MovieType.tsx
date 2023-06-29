@@ -1,14 +1,15 @@
 export interface Movie {
-    id: string,
     title: string,
     release_date: string,
     overview: string,
+    poster_path: string,
+    
 }
 
 function filterData(apiResponse: any): Movie[] {
     const movies: Movie[] = apiResponse.data.results.map((result: any) => {
         const movie: Movie = {
-            id: result.id,
+            poster_path: result.poster_path,
             title: result.title,
             release_date: result.release_date,
             overview: result.overview
