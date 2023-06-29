@@ -1,5 +1,5 @@
 import { AppBar, Button, Container, Toolbar } from "@mui/material";
-import { SearchForm } from "./SearchForm";
+//import { SearchForm } from "./SearchForm";
 
 export function Navbar() {
 
@@ -9,6 +9,7 @@ export function Navbar() {
             height : '36.5px',
             color: 'white',
             display: 'flex',
+            marginLeft: 'auto',
             outline: 'white',
             lineHeight: 1,
 
@@ -19,7 +20,7 @@ export function Navbar() {
             <Container maxWidth='xl' >
                 <Toolbar disableGutters>
                     <Button color="inherit" variant="contained">Movie Catalog</Button>
-                    <SearchForm/>
+                    
                     <Button sx={styles.loginButton}  variant="contained">Login</Button>
                 </Toolbar>
             </Container>
