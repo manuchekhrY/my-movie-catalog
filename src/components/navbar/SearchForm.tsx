@@ -1,80 +1,50 @@
-import { Button, Container, Grid, TextField } from "@mui/material";
-import { useState } from "react";
-import { searchUrl } from "../../extra/endPoint";
-import axios from "axios";
+import { Button, Container, TextField } from "@mui/material";
+import { Component } from "react";
 import './Navbar.css'
-import returnArrayData, { Movie } from "../../extra/MovieType";
+import React from "react";
 
 let currentPage = 1;
 
-export function SearchForm() {
+class SearchForm extends Component<{ onSearch: (searchText: string) => void }> {
+    state = {
+        searchText: "",
+    };
 
-    const [movieName, setMovieName] = useState<string>('');
+    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({ searchText: event.target.value });
+    };
 
-    const [arr, setArr] = useState<Movie[]>();
+    handleSearch = () => {
+        const { onSearch } = this.props;
+        const { searchText } = this.state;
+        onSearch(searchText);
+    };
 
-    function callAPI(page : number) {
-        axios.get(searchUrl(movieName, page))
-        .then((res) => {
-            setArr(returnArrayData(res));
-            currentPage = page;
-        })
-            .catch(err => console.log(err));
+    render() {
+        const { searchText } = this.state;
+
+        return (
+            <>
+                <Container sx={{ display: 'flex', alignContent: 'center', width: '700px', padding: '10px' }}>
+                    <TextField
+                        color="error"
+                        label="Enter text"
+                        value={searchText}
+                        onChange={this.handleInputChange}
+                        size="small"
+                        fullWidth
+                        sx={{ marginRight: '10px' }}
+                    />
+
+                    <Button
+                        variant="contained"
+                        onClick={this.handleSearch} >
+                        Search
+                    </Button>
+                </Container>
+            </>
+        )
     }
-
-    function callNextPage() {
-        const nextPage = currentPage + 1;
-        callAPI(nextPage);
-    }
-
-    const handleClick = () => {
-        callAPI(currentPage);
-    }
-
-    const handleClick2 = () =>{
-        callNextPage();
-    }
-
-    const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-
-    function displayData(array: Movie[]) {
-        return array.map((movie) => {
-            return (
-                <div className="form">
-                    <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
-                    <div>
-                        <h2>{movie.title}</h2>
-                        <p>{movie.overview}</p>
-                        <p>Release Date: {movie.release_date}</p>
-                    </div>
-                </div>)
-        });
-    }
-
-    return (
-        <>
-            <Container sx={{ display: 'flex', alignContent: 'center', width: '500px', padding: '10px' }}>
-                <TextField
-                    color="error"
-                    label="Enter text"
-                    onChange={e => (setMovieName(e.target.value), currentPage=1)}
-                    size="small"
-                    fullWidth
-                    sx={{ marginRight: '10px' }}
-                />
-
-                <Button
-                    variant="contained"
-                    onClick={handleClick} >
-                    Search currentPage{currentPage}
-                </Button>
-                <Button variant="contained" onClick={handleClick2}>Next Page</Button>
-            </Container>
-            <div className="forms">
-                {
-                    arr && (displayData(arr))
-                }
-            </div>
-        </>
-    )
 }
+
+export default SearchForm;
