@@ -3,8 +3,6 @@ import { Component } from "react";
 import './Navbar.css'
 import React from "react";
 
-let currentPage = 1;
-
 class SearchForm extends Component<{ onSearch: (searchText: string) => void }> {
     state = {
         searchText: "",

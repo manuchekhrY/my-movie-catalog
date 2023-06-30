@@ -12,7 +12,6 @@ export interface MovieState {
 
 function returnArrayData(apiResponse: any): Movie[] {
     const movies: Movie[] = apiResponse.data.results.map((result: any) => {
-        //console.log(result);
         const movie: Movie = {
             poster_path: result.poster_path,
             title: result.title,

@@ -10,37 +10,46 @@ import SearchForm from "../navbar/SearchForm";
 
 class MovieItem extends Component<{}, MovieState> {
 
+    currentPage = 1;
+
+    movieName = '';
+
     state: MovieState = {
         movies: [],
     };
 
-    fetchMovies = async (searchText: string) => {
-        axios.get(searchUrl(searchText, 1))
+    fetchMovies = async (searchText: string, page: number) => {
+        axios.get(searchUrl(searchText, page))
             .then(res => {
                 const data = returnArrayData(res);
                 this.setState({ movies: data });
+                this.currentPage = page;
             })
             .catch(err => console.log(err))
     };
 
     handleSearch = (searchText: string) => {
-        this.fetchMovies(searchText);
+        this.fetchMovies(searchText, this.currentPage);
+        this.movieName = searchText;
     };
 
+    callNextPage = () => {
+        const nextPage = this.currentPage + 1;
+        this.fetchMovies(this.movieName, nextPage);
+    }
+    callPrevPage = () => {
+        const prevPage = this.currentPage - 1;
+        this.fetchMovies(this.movieName, prevPage);
+    }
+
     displayData() {
-
         const { movies } = this.state;
-
         const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-
-        console.log("you called displayData method");
 
         return movies.map((movie) => {
             return (
                 <div className="form">
-
                     <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
-
                     <div>
                         <h2>{movie.title}</h2>
                         <p>{movie.overview}</p>
@@ -58,11 +67,11 @@ class MovieItem extends Component<{}, MovieState> {
                     {this.displayData()}
                 </div>
                 <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
-                    <IconButton color="primary" sx={{ marginRight: '10px' }}>
+                    <IconButton onClick={this.callPrevPage} color="primary" sx={{ marginRight: '10px' }}>
                         <KeyboardDoubleArrowLeftIcon />
                     </IconButton>
-                    <h3>Page</h3>
-                    <IconButton color="primary" sx={{ marginLeft: '10px' }}>
+                    <h4>Page {this.currentPage}</h4>
+                    <IconButton onClick={this.callNextPage} color="primary" sx={{ marginLeft: '10px' }}>
                         <KeyboardDoubleArrowRightIcon />
                     </IconButton>
                 </Container>
@@ -72,46 +81,3 @@ class MovieItem extends Component<{}, MovieState> {
 }
 
 export default MovieItem;
-
-/*
-    displayData() {
-
-        const { movies } = this.state;
-
-        const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-
-        console.log("you called displayData method");
-
-        return movies.map((movie) => {
-            return (
-                <div className="form">
-                    {
-                        //<img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
-                    }
-                    <div>
-                        <h2>{movie.title}</h2>
-
-                        <p>Release Date: </p>
-                    </div>
-                </div>)
-        });
-    }
-
-const MovieItem = () => {
-
-    //const search = new SearchForm();
-
-    return (
-        <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent:'center' }}>
-            <IconButton color="primary" sx={{marginRight: '10px'}}>
-                <KeyboardDoubleArrowLeftIcon />
-            </IconButton>
-            <h3>Page</h3>
-            <IconButton color="primary" sx={{marginLeft: '10px'}}>
-                <KeyboardDoubleArrowRightIcon />
-            </IconButton>
-        </Container>
-
-    )
-}
-*/

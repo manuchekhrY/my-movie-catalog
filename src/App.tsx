@@ -5,8 +5,8 @@ import MovieItem from './components/movie/MovieItem';
 function App() {
     return (
         <div>
-            <Navbar />        
-            <MovieItem/>
+            <Navbar />
+            <MovieItem />
         </div>
     );
 }
