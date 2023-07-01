@@ -33,7 +33,6 @@ class SearchForm extends Component<{ onSearch: (searchText: string) => void }> {
                         fullWidth
                         sx={{ marginRight: '10px' }}
                     />
-
                     <Button
                         variant="contained"
                         onClick={this.handleSearch} >

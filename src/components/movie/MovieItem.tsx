@@ -11,7 +11,8 @@ import SearchForm from "../navbar/SearchForm";
 class MovieItem extends Component<{}, MovieState> {
 
     currentPage = 1;
-
+    total_pages = 1;
+    lastPage = true;
     movieName = '';
 
     state: MovieState = {
@@ -19,18 +20,25 @@ class MovieItem extends Component<{}, MovieState> {
     };
 
     fetchMovies = async (searchText: string, page: number) => {
+        if(this.movieName !== searchText){
+            page = 1;
+        }
         axios.get(searchUrl(searchText, page))
             .then(res => {
+                this.movieName = searchText;
+                
                 const data = returnArrayData(res);
                 this.setState({ movies: data });
+                
+                this.total_pages = res.data.total_pages;
                 this.currentPage = page;
+                this.lastPage = this.currentPage === this.total_pages;
             })
             .catch(err => console.log(err))
     };
 
     handleSearch = (searchText: string) => {
         this.fetchMovies(searchText, this.currentPage);
-        this.movieName = searchText;
     };
 
     callNextPage = () => {
@@ -67,11 +75,11 @@ class MovieItem extends Component<{}, MovieState> {
                     {this.displayData()}
                 </div>
                 <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
-                    <IconButton onClick={this.callPrevPage} color="primary" sx={{ marginRight: '10px' }}>
+                    <IconButton onClick={this.callPrevPage} disabled={this.currentPage===1} color="primary" sx={{ marginRight: '10px' }}>
                         <KeyboardDoubleArrowLeftIcon />
                     </IconButton>
                     <h4>Page {this.currentPage}</h4>
-                    <IconButton onClick={this.callNextPage} color="primary" sx={{ marginLeft: '10px' }}>
+                    <IconButton onClick={this.callNextPage} disabled={this.lastPage} color="primary" sx={{ marginLeft: '10px' }}>
                         <KeyboardDoubleArrowRightIcon />
                     </IconButton>
                 </Container>
