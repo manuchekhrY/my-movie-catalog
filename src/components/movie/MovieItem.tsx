@@ -2,14 +2,15 @@ import { Container, IconButton } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import React, { Component } from "react";
-import returnArrayData, { MovieState } from "../../extra/MovieType";
+import returnArrayData, { Movie, MovieState } from "../../extra/MovieType";
 import axios from "axios";
-import { searchUrl } from "../../extra/endPoint";
+import { popularMoviesUrl, searchUrl } from "../../extra/endPoint";
 import '../navbar/Navbar.css'
 import SearchForm from "../navbar/SearchForm";
+import { useSelector } from "react-redux";
 
 class MovieItem extends Component<{}, MovieState> {
-
+    
     currentPage = 1;
     total_pages = 1;
     lastPage = true;
@@ -20,16 +21,16 @@ class MovieItem extends Component<{}, MovieState> {
     };
 
     fetchMovies = async (searchText: string, page: number) => {
-        if(this.movieName !== searchText){
+        if (this.movieName !== searchText) {
             page = 1;
         }
         axios.get(searchUrl(searchText, page))
             .then(res => {
                 this.movieName = searchText;
-                
+
                 const data = returnArrayData(res);
                 this.setState({ movies: data });
-                
+
                 this.total_pages = res.data.total_pages;
                 this.currentPage = page;
                 this.lastPage = this.currentPage === this.total_pages;
@@ -67,15 +68,33 @@ class MovieItem extends Component<{}, MovieState> {
         });
     }
 
+    displayTop =async () => {
+        await axios.get(popularMoviesUrl).
+            then(res => {
+                const data = res.data.results;
+                //console.log(data);
+
+                //this.setState({ movies: data })
+                const filtered = returnArrayData(res);
+                console.log(filtered);
+                this.my(res.data.results);
+                console.log(this.state.movies);
+            })
+    }
+    my = (text : MovieState) =>{
+        this.setState(text);
+    }
+
     render() {
         return (
             <>
                 <SearchForm onSearch={this.handleSearch} />
                 <div className="forms">
+                    {this.state.movies.length === 0 && <p>No movies found.</p>}
                     {this.displayData()}
                 </div>
                 <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
-                    <IconButton onClick={this.callPrevPage} disabled={this.currentPage===1} color="primary" sx={{ marginRight: '10px' }}>
+                    <IconButton onClick={this.callPrevPage} disabled={this.currentPage === 1} color="primary" sx={{ marginRight: '10px' }}>
                         <KeyboardDoubleArrowLeftIcon />
                     </IconButton>
                     <h4>Page {this.currentPage}</h4>
