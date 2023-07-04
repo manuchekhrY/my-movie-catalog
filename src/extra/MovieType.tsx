@@ -1,9 +1,9 @@
 export interface Movie {
     title: string,
-    release_date: string,
+    //release_date: string,
     overview: string,
     poster_path: string,
-    id : string,
+    id : number,
 }
 
 export interface MovieState {
@@ -16,7 +16,7 @@ function returnArrayData (apiResponse: any): Movie[] {
             id : result.id,
             poster_path: result.poster_path,
             title: result.title,
-            release_date: result.release_date,
+            //release_date: result.release_date,
             overview: result.overview
         };
         return movie;

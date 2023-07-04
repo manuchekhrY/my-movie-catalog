@@ -11,6 +11,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeAllMovies, showMovie, store } from "../../store";
 
 
+const MovieItem: React.FC = () => {
+    const movies = useSelector((state: { movies: Movie[] }) => state.movies);
+
+    const displayMovies = () => {
+
+        const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
+        return movies.map((movie) => (
+            <div key={movie.id} className="form">
+                <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
+                <div>
+                    <h2>{movie.title}</h2>
+                    <p>{movie.overview}</p>
+
+                </div>
+            </div>
+        ));
+    };
+
+    return <div className="forms">{displayMovies()}</div>;
+};
+
+export default MovieItem;
+
+/*
 function MovieItem() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -103,7 +128,7 @@ function MovieItem() {
         <>
             <SearchForm onSearch={handleSearch} />
             <div className="forms">
-                {/*movies.length === 0 && <p>No movies found.</p>*/}
+                {/*movies.length === 0 && <p>No movies found.</p>*-/}
                 {displayData()}
             </div>
             <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
@@ -118,6 +143,6 @@ function MovieItem() {
             </Container>
         </>
     )
-}
+}*/
 
-export default MovieItem;
+//export default MovieItem;
