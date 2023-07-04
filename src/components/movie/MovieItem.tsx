@@ -1,53 +1,35 @@
-import { Container, IconButton } from "@mui/material";
+import { Button, Container, IconButton } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import React, { Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 import returnArrayData, { Movie, MovieState } from "../../extra/MovieType";
 import axios from "axios";
-import { popularMoviesUrl, searchUrl } from "../../extra/endPoint";
+import { searchUrl } from "../../extra/endPoint";
 import '../navbar/Navbar.css'
 import SearchForm from "../navbar/SearchForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeAllMovies, showMovie, store } from "../../store";
+
 
 function MovieItem() {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [lastPage, setLastPage] = useState(true);
+    const [movieName, setMovieName] = useState('');
+    //const [movies, setMovies] = useState<Movie[]>([]);
 
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const dispatch = useDispatch();
 
     const topMovies = useSelector((state: MovieState) => {
-        //console.log(state.movies);
         return state.movies;
-    })
+    });
 
-    function top() {
-        const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-
-        return topMovies.map((movie) => {
-            return (
-                <div className="form">
-                    <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
-                    <div>
-                        <h2>{movie.title}</h2>
-                        <p>{movie.overview}</p>
-                        <p>Release Date: {movie.release_date}</p>
-                    </div>
-                </div>
-            )
-        });
+    const remove = () => {
+        dispatch(removeAllMovies())
     }
 
-    //let currentPage = 1;
-    const [currentPage, setCurrentPage] = useState(1);
-    //let total_pages = 1;
-    const [totalPages, setTotalPages] = useState(1);
-    //let lastPage = true;
-    const [lastPage, setLastPage] = useState(false);
-    //const movieName = '';
-    const [movieName, setMovieName] = useState('');
-    /*state: MovieState = {
-        movies: [],
-    };*/
+    const fetchMovies = (searchText: string, page: number) => {
 
-    const fetchMovies = async (searchText: string, page: number) => {
         if (movieName !== searchText) {
             page = 1;
         }
@@ -55,18 +37,36 @@ function MovieItem() {
             .then(res => {
                 setMovieName(searchText);
 
-                const data = returnArrayData(res);
-                setMovies(data);
+                //----const dataa = returnArrayData(res);
+                //----setMovies(dataa);
+                //dispatch(showMovie(dataa));
+                const filtered = returnArrayData(res);
 
-                setTotalPages(res.data.total_pages);
+                const currentState = store.getState().movies;
+
+                const newMovies = filtered.filter(movie => {
+                    return !currentState.some(existingMovie => existingMovie.id === movie.id);
+                });
+
+                if (newMovies.length > 0) {
+                    store.dispatch(showMovie(newMovies));
+                }
+
                 setCurrentPage(page);
-                console.log(totalPages);
-                //console.log("current page " + currentPage);
-                //console.log("page given to api " + page);
+                setTotalPages(res.data.total_pages);
                 setLastPage(currentPage === totalPages);
             })
             .catch(err => console.log(err))
     };
+
+    useEffect(() => {
+        fetchMovies(movieName, currentPage);
+    }, [movieName, currentPage]);
+
+    useEffect(()=>{
+        remove()
+    },[])
+
 
     const handleSearch = (searchText: string) => {
         fetchMovies(searchText, currentPage);
@@ -82,11 +82,13 @@ function MovieItem() {
     }
 
     function displayData() {
+        //remove()
         const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
 
-        return movies.map((movie) => {
+        //return movies.map((movie) => {
+        return topMovies.map((movie) => {
             return (
-                <div className="form">
+                <div key={movie.id} className="form">
                     <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
                     <div>
                         <h2>{movie.title}</h2>
@@ -101,9 +103,8 @@ function MovieItem() {
         <>
             <SearchForm onSearch={handleSearch} />
             <div className="forms">
-                {movies.length === 0 && <p>No movies found.</p>}
+                {/*movies.length === 0 && <p>No movies found.</p>*/}
                 {displayData()}
-                {top()}
             </div>
             <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
                 <IconButton onClick={callPrevPage} disabled={currentPage === 1} color="primary" sx={{ marginRight: '10px' }}>
@@ -113,10 +114,10 @@ function MovieItem() {
                 <IconButton onClick={callNextPage} disabled={lastPage} color="primary" sx={{ marginLeft: '10px' }}>
                     <KeyboardDoubleArrowRightIcon />
                 </IconButton>
+                <Button onClick={remove}>Remove</Button>
             </Container>
         </>
     )
-
 }
 
 export default MovieItem;

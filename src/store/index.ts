@@ -1,6 +1,5 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { Movie } from "../extra/MovieType";
-import { moviesReducer, showMovie } from "./moviesSlice";
+import { configureStore } from "@reduxjs/toolkit";
+import { moviesReducer, showMovie, removeAllMovies } from "./moviesSlice";
 
 const store = configureStore({
     reducer: {
@@ -8,4 +7,4 @@ const store = configureStore({
     }
   });
   
-export { store, showMovie };
+export { store, showMovie, removeAllMovies };

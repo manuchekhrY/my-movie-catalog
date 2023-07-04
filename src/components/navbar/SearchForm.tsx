@@ -1,47 +1,45 @@
 import { Button, Container, TextField } from "@mui/material";
-import { Component } from "react";
+import { useState } from "react";
 import './Navbar.css'
 import React from "react";
 
-class SearchForm extends Component<{ onSearch: (searchText: string) => void }> {
-    state = {
-        searchText: "",
+interface SearchFormProps {
+    onSearch: (searchText: string) => void;
+  }
+//function SearchForm (onSearch: (searchText: string) => void)  {
+
+const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+
+    const [searchText, setSearchText] = useState('');
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchText(event.target.value);
     };
 
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ searchText: event.target.value });
-    };
-
-    handleSearch = () => {
-        const { onSearch } = this.props;
-        const { searchText } = this.state;
+    const handleSearch = () => {
         onSearch(searchText);
     };
 
-    render() {
-        const { searchText } = this.state;
-
-        return (
-            <>
-                <Container sx={{ display: 'flex', alignContent: 'center', width: '700px', padding: '10px' }}>
-                    <TextField
-                        color="error"
-                        label="Enter text"
-                        value={searchText}
-                        onChange={this.handleInputChange}
-                        size="small"
-                        fullWidth
-                        sx={{ marginRight: '10px' }}
-                    />
-                    <Button
-                        variant="contained"
-                        onClick={this.handleSearch} >
-                        Search
-                    </Button>
-                </Container>
-            </>
-        )
-    }
+    return (
+        <>
+            <Container sx={{ display: 'flex', alignContent: 'center', width: '700px', padding: '10px' }}>
+                <TextField
+                    color="error"
+                    label="Enter text"
+                    value={searchText}
+                    onChange={handleInputChange}
+                    size="small"
+                    fullWidth
+                    sx={{ marginRight: '10px' }}
+                />
+                <Button
+                    variant="contained"
+                    onClick={handleSearch} >
+                    Search
+                </Button>
+            </Container>
+        </>
+    )
 }
 
 export default SearchForm;
