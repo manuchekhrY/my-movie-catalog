@@ -2,35 +2,51 @@ import { Button, Container, IconButton } from "@mui/material";
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import React, { useEffect, useState } from "react";
-import returnArrayData, { Movie, MovieState } from "../../extra/MovieType";
+import returnArrayData, { Movie } from "../../extra/MovieType";
 import axios from "axios";
 import { searchUrl } from "../../extra/endPoint";
 import '../navbar/Navbar.css'
 import SearchForm from "../navbar/SearchForm";
 import { useDispatch, useSelector } from "react-redux";
-import { removeAllMovies, showMovie, store } from "../../store";
+//import { removeAllMovies, showMovie, store } from "../../store";
+import { MoviesState, setMovies } from "../../store/store";
 
 
 const MovieItem: React.FC = () => {
-    const movies = useSelector((state: { movies: Movie[] }) => state.movies);
+    const movies = useSelector((state : {movies : {movies : Movie[]}})=>state.movies.movies);
 
     const displayMovies = () => {
 
         const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
-
+        //console.log(movies.map((movie)=>'hi '+movie.title))
         return movies.map((movie) => (
             <div key={movie.id} className="form">
                 <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
                 <div>
                     <h2>{movie.title}</h2>
                     <p>{movie.overview}</p>
-
+                    <p>Release Date : {movie.release_date}</p>
                 </div>
             </div>
         ));
     };
 
-    return <div className="forms">{displayMovies()}</div>;
+    return (
+        <>
+            <div className="forms">
+                {
+                    displayMovies()
+                }
+            </div>
+            {/*
+            <Container sx={{ display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+                <Button variant="outlined">PrevPage</Button>
+                <h4>Page </h4>
+                <Button variant="outlined">NextPage</Button>
+            </Container>*/
+            }
+        </>
+    );
 };
 
 export default MovieItem;

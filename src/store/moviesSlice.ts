@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Movie, MovieState } from "../extra/MovieType";
+import { Movie } from "../extra/MovieType";
 
 const moviesSlice = createSlice({
     name: "movie",
@@ -23,5 +23,5 @@ const moviesSlice = createSlice({
     },
 });
 
-export const { showMovie, removeAllMovies } = moviesSlice.actions;
-export const moviesReducer = moviesSlice.reducer;
+//export const { showMovie, removeAllMovies } = moviesSlice.actions;
+//export const moviesReducer = moviesSlice.reducer;
