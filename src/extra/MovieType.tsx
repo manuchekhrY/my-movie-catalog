@@ -6,10 +6,6 @@ export interface Movie {
     id : number,
 }
 
-/*export interface MovieState {
-    movies: Movie[];
-}*/
-
 function returnArrayData (apiResponse: any): Movie[] {
     const movies: Movie[] = apiResponse.data.results.map((result: any) => {
         const movie: Movie = {

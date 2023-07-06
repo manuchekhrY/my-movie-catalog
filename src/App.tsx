@@ -3,57 +3,42 @@ import Navbar from './components/navbar/Navbar';
 import MovieItem from './components/movie/MovieItem';
 import SearchForm from './components/navbar/SearchForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { MoviesState, setMovies } from './store/store';
+import { setMovies } from './store/store';
 import axios from 'axios';
 import { popularMoviesUrl, searchUrl } from './extra/endPoint';
-import { Button } from '@mui/material';
+import { Container, IconButton } from '@mui/material';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+
 
 const App: React.FC = () => {
-    const dispatch = useDispatch();
-    const movies = useSelector((state: MoviesState) => state.movies);
-    const totalPages = useSelector((state: { movies: { totalPages: number } }) => state.movies.totalPages);
 
-    //const movies = useSelector((state : Movie[])=>state);
-    //const movies = useSelector((state: { movies : Movie[]}) => state.movies);
+    const dispatch = useDispatch();
+    const totalPages = useSelector((state: { movies: { totalPages: number } }) => state.movies.totalPages);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
     const [loadTopMovies, setLoadTopMovies] = useState(false);
 
-
-    //const totalPages = useSelector((state: MoviesState) => state.totalPages);
     const handleTopMoviesClick = () => {
-
         axios.get(popularMoviesUrl(currentPage)).then(res => {
             const movies = res.data.results;
             const totalPages = res.data.total_pages;
-
             dispatch(setMovies({ movies, totalPages }));
-            //console.log(setMovies({movies, totalPages}))
         });
     };
 
     const handleSearchMovies = (query: string) => {
-        //setSearchQuery(query);
         axios.get(searchUrl(query, currentPage)).then(res => {
             const movies = res.data.results;
             const totalPages = res.data.total_pages;
-
             dispatch(setMovies({ movies, totalPages }));
-            //console.log(setMovies({movies, totalPages}))
         });
     };
 
-  /*  useEffect(()=>{
-        //if(currentPage !== 1)
-            handleSearchMovies(searchQuery)
-            //handleTopMoviesClick()
-    }, [currentPage])
-*/
     useEffect(() => {
-        if (loadTopMovies){
+        if (loadTopMovies) {
             handleTopMoviesClick();
-            //setLoadTopMovies(false);
             setSearchQuery('')
         }
     }, [loadTopMovies, currentPage]);
@@ -61,7 +46,6 @@ const App: React.FC = () => {
     useEffect(() => {
         if (searchQuery !== '') {
             handleSearchMovies(searchQuery);
-            //setSearchQuery('');
             setLoadTopMovies(false)
         }
     }, [searchQuery, currentPage]);
@@ -75,21 +59,23 @@ const App: React.FC = () => {
             <Navbar onClick={() => setLoadTopMovies(true)} />
             <SearchForm onSearch={setSearchQuery} />
             <MovieItem />
-            <div>
-                <button
+            <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
+                <IconButton
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
+                    color="primary"
                 >
-                    Previous Page
-                </button>
-                <button
+                    <KeyboardDoubleArrowLeftIcon />
+                </IconButton>
+                <h4>Page {currentPage}</h4>
+                <IconButton
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages || totalPages === 0}
+                    color="primary"
                 >
-                    Next Page
-                </button>
-            </div>
-            <h4>Page {currentPage}</h4>
+                    <KeyboardDoubleArrowRightIcon />
+                </IconButton>
+            </Container>
         </div>
     );
 };

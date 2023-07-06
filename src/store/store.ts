@@ -6,7 +6,6 @@ export interface MoviesState {
   totalPages: number;
 }
 
-//const initialState : Movie[] = [];
 const initialState: MoviesState = {
   movies: [],
   totalPages: 0,
@@ -16,13 +15,9 @@ const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {
-    //setMovies: (state, action: PayloadAction<Movie[]>) => {
     setMovies: (state, action: PayloadAction<{movies : Movie[], totalPages : number}>) => {
-    //setMovies: (state, action: PayloadAction<MoviesState>) => {
-    //setMovies: (state, action: PayloadAction<MoviesState>) => {
       state.movies = action.payload.movies;
       state.totalPages = action.payload.totalPages;
-      //return action.payload;
     },
   },
 });
