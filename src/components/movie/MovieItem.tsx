@@ -1,7 +1,7 @@
 import React from "react";
-import { Movie } from "../../extra/MovieType";
 import '../navbar/Navbar.css'
 import { useSelector } from "react-redux";
+import { Movie } from "../../store/store";
 
 const MovieItem: React.FC = () => {
     const movies = useSelector((state: { movies: { movies: Movie[] } }) => state.movies.movies);

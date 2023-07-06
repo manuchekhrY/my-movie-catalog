@@ -1,9 +1,16 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { Movie } from "../extra/MovieType";
 
 export interface MoviesState {
   movies: Movie[];
   totalPages: number;
+}
+
+export interface Movie {
+  title: string,
+  release_date: string,
+  overview: string,
+  poster_path: string,
+  id : number,
 }
 
 const initialState: MoviesState = {
@@ -22,12 +29,12 @@ const moviesSlice = createSlice({
   },
 });
 
-const store1 = configureStore({
+const store = configureStore({
   reducer: {
     movies: moviesSlice.reducer
   }
 });
 
 
-export default store1;
+export default store;
 export const { setMovies } = moviesSlice.actions;
