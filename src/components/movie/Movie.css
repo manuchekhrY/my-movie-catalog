@@ -1,0 +1,24 @@
+.movie-details {
+    display: flex;
+    align-items: flex-start;
+}
+
+.poster {
+    width: 30%;
+    height: auto;
+    margin-right: 20px;
+}
+
+.info {
+    flex: 1;
+}
+
+.title {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.overview {
+    font-size: 16px;
+    color: #888;
+}

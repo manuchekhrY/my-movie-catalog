@@ -6,6 +6,7 @@ export interface MoviesState {
 }
 
 export interface Movie {
+  vote_average : string,
   title: string,
   release_date: string,
   overview: string,
