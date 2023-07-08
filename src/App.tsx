@@ -19,11 +19,13 @@ const App: React.FC = () => {
     const [loadTopMovies, setLoadTopMovies] = useState(false);
 
     const handleTopMoviesClick = () => {
+        setCurrentPage(1);
         setLoadTopMovies(true);
         setSearchQuery('');
     };
 
     const handleSearchMovies = (query: string) => {
+        setCurrentPage(1);
         setSearchQuery(query);
         setLoadTopMovies(false);
     };
@@ -32,11 +34,15 @@ const App: React.FC = () => {
         setCurrentPage(newPage);
     };
 
+    const clear = ()=>{
+        setSearchQuery('');
+    }
+
     return (
         <div>
             <BrowserRouter>
-                <Navbar onClick={handleTopMoviesClick} />
-                <SearchForm onSearch={handleSearchMovies} />
+            <button onClick={clear}>clear</button>
+                <Navbar onClick={handleTopMoviesClick} onSearch={handleSearchMovies} />
                 <Routes>
                     <Route path='/' element={<MovieList />}/>
                     <Route path='/movies/:movieId' element={<MovieItem />}/>

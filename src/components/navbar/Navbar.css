@@ -1,19 +1,15 @@
-.forms {
-    display: grid;
-    padding: 50px;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-.form {
+.root {
     display: flex;
-    background-color: rgba(87, 155, 208, 0.3);
-    border-radius: 5px;
+    justify-content: space-between;
+    /*background-color: #f2f2d2;*/
     padding: 10px;
-}  
-
-.image {
-    padding-right: 20px;
-    object-fit: cover;
-    width: 33%;
-}
+  }
+  
+  .button-left {
+    margin-left: 10px;
+  }
+  
+  .button-right {
+    margin-right: 10px;
+  }
+  
