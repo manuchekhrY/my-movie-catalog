@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 interface SearchFormProps {
     onSearch: (searchText: string) => void;
-  }
+}
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 
@@ -14,6 +14,10 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
     const handleSearch = () => {
         onSearch(searchText);
     };
+
+    const clear = () => {
+        setSearchText('')
+    }
 
     return (
         <>
@@ -28,12 +32,13 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
                     sx={{ marginRight: '10px' }}
                 />
                 <Link to='/'>
-                <Button
-                    variant="contained"
-                    onClick={handleSearch} >
-                    Search
-                </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleSearch} >
+                        Search
+                    </Button>
                 </Link>
+                <button onClick={clear}>CLear m e</button>
             </Container>
         </>
     )

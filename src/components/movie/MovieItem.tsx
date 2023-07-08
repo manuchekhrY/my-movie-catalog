@@ -41,7 +41,7 @@ export const MovieItem: React.FC = () => {
           className="image"
           src={movie.poster_path ? imgBaseUrl + movie.poster_path : 'NoPosterFound.png'}
           alt={movie.title}
-          style={{ width: '200px', height: '300px' }}
+          //style={{ width: '200px', height: '300px' }}
         />
         <div className="info">
           <h2 className="title">{movie.title}</h2>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './components/navbar/Navbar';
 import MovieList from './components/movie/MovieList';
-import SearchForm from './components/navbar/SearchForm';
 import { useSelector } from 'react-redux';
 import { popularMoviesUrl, searchUrl } from './extra/endPoint';
 import NavigationButtons from './extra/pageNavigation';
@@ -34,29 +33,33 @@ const App: React.FC = () => {
         setCurrentPage(newPage);
     };
 
-    const clear = ()=>{
+    const clear = () => {
         setSearchQuery('');
     }
 
     return (
         <div>
             <BrowserRouter>
-            <button onClick={clear}>clear</button>
+                <button onClick={clear}>clear</button>
                 <Navbar onClick={handleTopMoviesClick} onSearch={handleSearchMovies} />
                 <Routes>
-                    <Route path='/' element={<MovieList />}/>
-                    <Route path='/movies/:movieId' element={<MovieItem />}/>
+                    <Route path='/' element={<MovieList
+                        navigationButtons={
+                            <NavigationButtons
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                            />
+                        }
+                    />} />
+                    <Route path='/movies/:movieId' element={<MovieItem />} />
                 </Routes>
                 {loadTopMovies ? (
                     <MovieFetcher url={popularMoviesUrl(currentPage)} currentPage={currentPage} />
                 ) : (
                     <MovieFetcher url={searchUrl(searchQuery, currentPage)} currentPage={currentPage} />
                 )}
-                <NavigationButtons
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+
             </BrowserRouter>
         </div>
     );
