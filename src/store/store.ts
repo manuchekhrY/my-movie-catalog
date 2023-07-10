@@ -6,12 +6,19 @@ export interface MoviesState {
 }
 
 export interface Movie {
-  vote_average : string,
+  vote_average: string,
   title: string,
   release_date: string,
   overview: string,
   poster_path: string,
-  id : number,
+  id: number,
+  genres: [
+    {
+      id: number,
+      name: string,
+    }
+  ],
+  tagline: string,
 }
 
 const initialState: MoviesState = {
@@ -23,7 +30,7 @@ const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {
-    setMovies: (state, action: PayloadAction<{movies : Movie[], totalPages : number}>) => {
+    setMovies: (state, action: PayloadAction<{ movies: Movie[], totalPages: number }>) => {
       state.movies = action.payload.movies;
       state.totalPages = action.payload.totalPages;
     },

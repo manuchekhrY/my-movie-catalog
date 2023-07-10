@@ -1,15 +1,15 @@
-.root {
-    display: flex;
-    justify-content: space-between;
-    /*background-color: #f2f2d2;*/
-    padding: 10px;
-  }
-  
-  .button-left {
-    margin-left: 10px;
-  }
-  
-  .button-right {
-    margin-right: 10px;
-  }
-  
+.navbar {
+    height: 100px;
+    padding: 0 50px;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.outer {
+    background-color: #116A7B;
+}
+
+.link {
+  text-decoration: none;
+}

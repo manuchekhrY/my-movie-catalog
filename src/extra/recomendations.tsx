@@ -1,5 +1,5 @@
 import axios from "axios"
-import { recommendationsUrl } from "./endPoint"
+import { recommendationsUrl } from "./apiEndPoints"
 import { useState } from "react";
 import { Movie } from "../store/store";
 import { Link } from "react-router-dom";
@@ -18,24 +18,43 @@ export const Recommendations: React.FC<RecommendationProp> = ({ id }) => {
     axios.get(recommendationsUrl(id))
         .then(res =>
             setMovies(res.data.results)
+        ).catch(
+            err => console.log(err)
         )
+
+    const scrollTop = () => {
+        window.scrollTo(0, 0);
+    }
 
     return (
         <div className="forms">
             {
                 movies.map((movie) => (
-                    <Link to={`/movies/${movie.id}`} key={movie.id} >
+                    <Link className="link" to={`/movies/${movie.id}`} key={movie.id} onClick={scrollTop}>
                         <div className="form">
-                            <img className="image" src={imgBaseUrl + movie.poster_path} alt={movie.title} />
+                            <div className="image-container">
+                                <img
+                                    className="image"
+                                    src={movie.poster_path ? imgBaseUrl + movie.poster_path : 'NoPosterFound.png'}
+                                    alt={movie.title}
+                                />
+                            </div>
                             <div>
                                 <h2>{movie.title}</h2>
-                                <p>{movie.overview}</p>
-                                <p>Release Date : {movie.release_date}</p>
+                                <p className="overview-text">{movie.overview}</p>
+                                <p className="release-date">Release Date: {movie.release_date}</p>
+                                {
+                                    Number(movie.vote_average) !== 0 ? (
+                                        <p className="rating">Rating: {movie.vote_average}</p>) : (
+                                        <p className="rating">No ratings yet</p>
+                                    )
+                                }
                             </div>
                         </div>
                     </Link>
                 ))
             }
         </div>
+
     )
 }

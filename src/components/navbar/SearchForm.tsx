@@ -15,32 +15,37 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
         onSearch(searchText);
     };
 
-    const clear = () => {
-        setSearchText('')
-    }
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch();
+        }
+    };
 
     return (
-        <>
-            <Container sx={{ display: 'flex', alignContent: 'center', width: '700px', padding: '10px' }}>
-                <TextField
-                    color="error"
-                    label="Enter text"
-                    value={searchText}
-                    onChange={e => setSearchText(e.target.value)}
-                    size="small"
-                    fullWidth
-                    sx={{ marginRight: '10px' }}
-                />
-                <Link to='/'>
-                    <Button
-                        variant="contained"
-                        onClick={handleSearch} >
-                        Search
-                    </Button>
-                </Link>
-                <button onClick={clear}>CLear m e</button>
-            </Container>
-        </>
+        <Container sx={{ display: 'flex', alignItems: 'center', width: '500px' }} >
+            <TextField
+                color="info"
+                placeholder="Enter Movie Name"
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                size="small"
+                fullWidth
+                sx={{ marginRight: '10px', backgroundColor: 'white', borderRadius: '5px' }}
+                onKeyDown={handleKeyDown}
+            />
+            <Link to='/'>
+                <Button
+                    variant="contained"
+                    color="inherit"
+                    size="large"
+                    onClick={handleSearch}
+                    sx={{ borderRadius: '10px', color: "black" }}
+                >
+                    Search
+                </Button>
+            </Link>
+        </Container>
     )
 }
 

@@ -1,7 +1,7 @@
 import { AppBar, Button, Container, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-import './Navbar.css'
 import SearchForm from "./SearchForm";
+import './Navbar.css'
 
 interface NavbarProps {
     onClick: () => void;
@@ -10,14 +10,31 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onClick, onSearch }) => {
 
     return (
-        <AppBar position="static" sx={{ marginBottom: '30px' }}>
-            <Container maxWidth='xl' >
-                <Toolbar >
-                    <Link to='/'>
-                        <Button className="button-left" color="inherit" variant="contained" >Movie Catalog</Button>
-                        <Button className="button-right" color="error" variant="contained" onClick={onClick}>Top Movies</Button>
+        <AppBar position="static" >
+            <Container maxWidth='xl' className="outer" >
+                <Toolbar className="navbar">
+                    <Link className="link" to='/'>
+                        <Button
+                            color="inherit"
+                            size="large"
+                            variant="contained"
+                            sx={{ marginRight: '10px', alignSelf: 'center', borderRadius: "10px", color: 'black' }}
+                        >
+                            Movie Catalog
+                        </Button>
                     </Link>
                     <SearchForm onSearch={onSearch} />
+                    <Link to='/'>
+                        <Button
+                            color="inherit"
+                            size="large"
+                            variant="contained"
+                            onClick={onClick}
+                            sx={{ borderRadius: '10px', color: "black" }}
+                        >
+                            Top Movies
+                        </Button>
+                    </Link>
                 </Toolbar>
             </Container>
         </AppBar>

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import Navbar from './components/navbar/Navbar';
 import MovieList from './components/movie/MovieList';
 import { useSelector } from 'react-redux';
-import { popularMoviesUrl, searchUrl } from './extra/endPoint';
+import { popularMoviesUrl, searchUrl } from './extra/apiEndPoints';
 import NavigationButtons from './extra/pageNavigation';
 import MovieFetcher from './extra/movieFetcher';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { MovieItem } from './components/movie/MovieItem';
+import './App.css'
 
 
 const App: React.FC = () => {
@@ -31,16 +32,12 @@ const App: React.FC = () => {
 
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
+        window.scrollTo(0,0);
     };
 
-    const clear = () => {
-        setSearchQuery('');
-    }
-
     return (
-        <div>
+        <div className='main'>
             <BrowserRouter>
-                <button onClick={clear}>clear</button>
                 <Navbar onClick={handleTopMoviesClick} onSearch={handleSearchMovies} />
                 <Routes>
                     <Route path='/' element={<MovieList
