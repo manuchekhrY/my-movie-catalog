@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/navbar/Navbar';
-import MovieItem from './components/movie/MovieItem';
-import SearchForm from './components/navbar/SearchForm';
-import { useDispatch, useSelector } from 'react-redux';
-import { setMovies } from './store/store';
-import axios from 'axios';
-import { popularMoviesUrl, searchUrl } from './extra/endPoint';
-import { Container, IconButton } from '@mui/material';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import MovieList from './components/movie/MovieList';
+import { useSelector } from 'react-redux';
+import { popularMoviesUrl, searchUrl } from './extra/apiEndPoints';
+import NavigationButtons from './extra/pageNavigation';
+import MovieFetcher from './extra/movieFetcher';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { MovieItem } from './components/movie/MovieItem';
+import './App.css'
 
 
 const App: React.FC = () => {
 
-    const dispatch = useDispatch();
     const totalPages = useSelector((state: { movies: { totalPages: number } }) => state.movies.totalPages);
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,61 +19,45 @@ const App: React.FC = () => {
     const [loadTopMovies, setLoadTopMovies] = useState(false);
 
     const handleTopMoviesClick = () => {
-        axios.get(popularMoviesUrl(currentPage)).then(res => {
-            const movies = res.data.results;
-            const totalPages = res.data.total_pages;
-            dispatch(setMovies({ movies, totalPages }));
-        });
+        setCurrentPage(1);
+        setLoadTopMovies(true);
+        setSearchQuery('');
     };
 
     const handleSearchMovies = (query: string) => {
-        axios.get(searchUrl(query, currentPage)).then(res => {
-            const movies = res.data.results;
-            const totalPages = res.data.total_pages;
-            dispatch(setMovies({ movies, totalPages }));
-        });
+        setCurrentPage(1);
+        setSearchQuery(query);
+        setLoadTopMovies(false);
     };
-
-    useEffect(() => {
-        if (loadTopMovies) {
-            handleTopMoviesClick();
-            setSearchQuery('')
-        }
-    }, [loadTopMovies, currentPage]);
-
-    useEffect(() => {
-        if (searchQuery !== '') {
-            handleSearchMovies(searchQuery);
-            setLoadTopMovies(false)
-        }
-    }, [searchQuery, currentPage]);
 
     const handlePageChange = (newPage: number) => {
         setCurrentPage(newPage);
+        window.scrollTo(0,0);
     };
 
     return (
-        <div>
-            <Navbar onClick={() => setLoadTopMovies(true)} />
-            <SearchForm onSearch={setSearchQuery} />
-            <MovieItem />
-            <Container sx={{ display: 'flex', alignContent: 'center', width: '200px', justifyContent: 'center' }}>
-                <IconButton
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    color="primary"
-                >
-                    <KeyboardDoubleArrowLeftIcon />
-                </IconButton>
-                <h4>Page {currentPage}</h4>
-                <IconButton
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages || totalPages === 0}
-                    color="primary"
-                >
-                    <KeyboardDoubleArrowRightIcon />
-                </IconButton>
-            </Container>
+        <div className='main'>
+            <BrowserRouter>
+                <Navbar onClick={handleTopMoviesClick} onSearch={handleSearchMovies} />
+                <Routes>
+                    <Route path='/' element={<MovieList
+                        navigationButtons={
+                            <NavigationButtons
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                            />
+                        }
+                    />} />
+                    <Route path='/movies/:movieId' element={<MovieItem />} />
+                </Routes>
+                {loadTopMovies ? (
+                    <MovieFetcher url={popularMoviesUrl(currentPage)} currentPage={currentPage} />
+                ) : (
+                    <MovieFetcher url={searchUrl(searchQuery, currentPage)} currentPage={currentPage} />
+                )}
+
+            </BrowserRouter>
         </div>
     );
 };

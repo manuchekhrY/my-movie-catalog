@@ -1,10 +1,11 @@
 import { Button, Container, TextField } from "@mui/material";
 import { useState } from "react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface SearchFormProps {
     onSearch: (searchText: string) => void;
-  }
+}
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 
@@ -14,25 +15,37 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
         onSearch(searchText);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            handleSearch();
+        }
+    };
+
     return (
-        <>
-            <Container sx={{ display: 'flex', alignContent: 'center', width: '700px', padding: '10px' }}>
-                <TextField
-                    color="error"
-                    label="Enter text"
-                    value={searchText}
-                    onChange={e => setSearchText(e.target.value)}
-                    size="small"
-                    fullWidth
-                    sx={{ marginRight: '10px' }}
-                />
+        <Container sx={{ display: 'flex', alignItems: 'center', width: '500px' }} >
+            <TextField
+                color="info"
+                placeholder="Enter Movie Name"
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                size="small"
+                fullWidth
+                sx={{ marginRight: '10px', backgroundColor: 'white', borderRadius: '5px' }}
+                onKeyDown={handleKeyDown}
+            />
+            <Link to='/'>
                 <Button
                     variant="contained"
-                    onClick={handleSearch} >
+                    color="inherit"
+                    size="large"
+                    onClick={handleSearch}
+                    sx={{ borderRadius: '10px', color: "black" }}
+                >
                     Search
                 </Button>
-            </Container>
-        </>
+            </Link>
+        </Container>
     )
 }
 

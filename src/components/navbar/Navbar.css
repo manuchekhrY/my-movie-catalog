@@ -1,19 +1,15 @@
-.forms {
-    display: grid;
-    padding: 50px;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+.navbar {
+    height: 100px;
+    padding: 0 50px;
+    justify-content: space-around;
+    align-items: center;
+
 }
 
-.form {
-    display: flex;
-    background-color: rgba(87, 155, 208, 0.3);
-    border-radius: 5px;
-    padding: 10px;
-}  
+.outer {
+    background-color: #116A7B;
+}
 
-.image {
-    padding-right: 20px;
-    object-fit: cover;
-    width: 33%;
+.link {
+  text-decoration: none;
 }
