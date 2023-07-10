@@ -50,7 +50,9 @@ export const MovieItem: React.FC = () => {
         />
         <div className='info'>
           <h2 className='title'>{movie.title}</h2>
-          <Typography sx={{ fontStyle: 'italic', marginBottom: '10px' }} >'{movie.tagline}'</Typography>
+          { movie.tagline && (
+            <Typography sx={{ fontStyle: 'italic', marginBottom: '10px' }} >'{movie.tagline}'</Typography>) 
+          }
           <p className='overview'>{movie.overview}</p>
           {divider()}
           <p className='other'> Release Date :
