@@ -20,7 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({ onClick, onSearch }) => {
                             variant="contained"
                             sx={{ marginRight: '10px', alignSelf: 'center', borderRadius: "10px", color: 'black' }}
                         >
-                            Movie Catalog
+                            Movie Catalogue
                         </Button>
                     </Link>
                     <SearchForm onSearch={onSearch} />

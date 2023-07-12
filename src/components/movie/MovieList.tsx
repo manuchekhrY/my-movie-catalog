@@ -34,7 +34,7 @@ const MovieList: React.FC<MovieListProps> = ({ navigationButtons }) => {
                                 <div>
                                     <h2>{movie.title}</h2>
                                     <p className="overview-text">{movie.overview}</p>
-                                    <p className="release-date">Release Date: {movie.release_date}</p>
+                                    <p className="release-date">Release Date: {movie.release_date}</p>                 
                                     {
                                         Number(movie.vote_average) !== 0 ? (
                                             <p className="rating">Rating: {movie.vote_average}</p>) : (
